@@ -22,7 +22,7 @@ func toURL(u string) (ret *url.URL) {
 }
 
 func main() {
-	client := mqtt.NewClient(&mqtt.NewClientOptions(){
+	client := mqtt.NewClient(&mqtt.ClientOptions(){
 		Servers: []*url.URL{toURL(fmt.Sprintf("%s://%s:%s", *protocol, *host, *port))},
 		ClientID: *clientName,
 	})
