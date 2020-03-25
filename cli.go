@@ -3,9 +3,12 @@ package main
 import (
 	mqtt "github.com/eclipse/paho.mqtt.golang"
 	"flag"
+	"net/url"
+	"log"
+	"fmt"
 )
 
-var clientName = flag.String("name", "ws-client")
+var clientName = flag.String("name", "ws-client", "name of client")
 var host = flag.String("host", "hivemq", "path to host")
 var port = flag.String("port", "1883", "port")
 var protocol = flag.String("protocol", "tcp", "protocol")
@@ -22,7 +25,7 @@ func toURL(u string) (ret *url.URL) {
 }
 
 func main() {
-	client := mqtt.NewClient(&mqtt.ClientOptions(){
+	cl := mqtt.NewClient(&mqtt.ClientOptions{
 		Servers: []*url.URL{toURL(fmt.Sprintf("%s://%s:%s", *protocol, *host, *port))},
 		ClientID: *clientName,
 	})
