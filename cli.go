@@ -14,6 +14,7 @@ var port = flag.String("port", "1883", "port")
 var protocol = flag.String("protocol", "tcp", "protocol")
 var topic = flag.String("topic", "test", "topic")
 var message = flag.String("message", "haha", "message")
+var path = flag.String("path", "mqtt", "path of ws")
 
 func toURL(u string) (ret *url.URL) {
 	ret, err := url.Parse(u)
@@ -26,8 +27,13 @@ func toURL(u string) (ret *url.URL) {
 
 func main() {
 	flag.Parse()
+	urlp := fmt.Sprintf("%s://%s:%s", *protocol, *host, *port)
+	if *protocol == "ws" {
+		urlp = fmt.Sprintf("%s://%s:%s/%s", *protocol, *host, *port, *path)
+	}
+
 	cl := mqtt.NewClient(&mqtt.ClientOptions{
-		Servers: []*url.URL{toURL(fmt.Sprintf("%s://%s:%s", *protocol, *host, *port))},
+		Servers: []*url.URL{toURL(urlp)},
 		ClientID: *clientName,
 	})
 
